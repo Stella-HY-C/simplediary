@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 
-const DiaryEditor = () => {
+const DiaryEditor = ({ onCreate }) => {
   // 속성이 비슷한 state를 굳이 2개로 나누지 않고 하나로 합칠 수 있다.
   //   const [author, setAuthor] = useState("");
   //   const [content, setContent] = useState("");
@@ -72,7 +72,15 @@ const DiaryEditor = () => {
       return;
     }
 
-    alert("저장완료");
+    // props로 전달받은 함수를 실행하면 된다.
+    onCreate(state);
+    // alert("저장완료");
+    // 저장이 완료 되면 초기화 시키기
+    setState({
+      author: "",
+      content: "",
+      emotion: 1,
+    });
   };
 
   return (
