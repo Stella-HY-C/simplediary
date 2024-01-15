@@ -2,6 +2,7 @@ import "./App.css";
 import { useRef, useState } from "react";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
+import Lifecycle from "./LifeSycle";
 
 function App() {
   // DiaryList와 DiaryEditor에서 사용할 공통 데이터
@@ -73,6 +74,7 @@ function App() {
   return (
     // 다이어리 에디터를 만들기
     <div className="App">
+      <Lifecycle />
       <DiaryEditor onCreate={onCreate} />
       <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
     </div>
