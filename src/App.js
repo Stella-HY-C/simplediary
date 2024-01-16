@@ -1,14 +1,39 @@
 import "./App.css";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
-import Lifecycle from "./LifeSycle";
+// import Lifecycle from "./LifeSycle";
+
+// https://jsonplaceholder.typicode.com/comments
 
 function App() {
   // DiaryList와 DiaryEditor에서 사용할 공통 데이터
   const [data, setData] = useState([]);
 
   const dataId = useRef(0);
+
+  // 비동기로 값 가져오기
+  const getData = async () => {
+    const res = await fetch(
+      "https://jsonplaceholder.typicode.com/comments"
+    ).then((res) => res.json());
+
+    const initData = res.slice(0, 20).map((item) => {
+      return {
+        id: item.id,
+        author: item.email,
+        content: item.body,
+        emotion: Math.floor(Math.random() * 5) + 1,
+      };
+    });
+
+    setData(initData);
+  };
+
+  // mount시에 실행
+  useEffect(() => {
+    getData();
+  }, []);
 
   // 새로작성하는 데이터를 받는 함수
   const onCreate = ({ author, content, emotion }) => {
@@ -74,7 +99,7 @@ function App() {
   return (
     // 다이어리 에디터를 만들기
     <div className="App">
-      <Lifecycle />
+      {/* <Lifecycle /> */}
       <DiaryEditor onCreate={onCreate} />
       <DiaryList diaryList={data} onRemove={onRemove} onEdit={onEdit} />
     </div>
