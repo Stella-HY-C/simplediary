@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const DiaryItem = ({
   id,
@@ -9,6 +9,11 @@ const DiaryItem = ({
   onRemove,
   onEdit,
 }) => {
+  // 어떤 아이템들이 리랜더링 되는지 확인하기
+  // useEffect(() => {
+  //   console.log(`${id}번째 아이템 랜더`);
+  // });
+
   // 수정상태 state
   const [isEdit, setEdit] = useState(false);
 
@@ -77,4 +82,4 @@ const DiaryItem = ({
   );
 };
 
-export default DiaryItem;
+export default React.memo(DiaryItem);

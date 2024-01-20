@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 const DiaryEditor = ({ onCreate }) => {
   // 속성이 비슷한 state를 굳이 2개로 나누지 않고 하나로 합칠 수 있다.
@@ -32,6 +32,8 @@ const DiaryEditor = ({ onCreate }) => {
   //       <div></div>
   //     </div>
   //   );
+
+  // useEffect(() => console.log("시작"));
 
   // 이런식으로 객체 형식으로 지정가능 - 비구조화 할당 + useState 객체방식
   const [state, setState] = useState({
@@ -122,4 +124,4 @@ const DiaryEditor = ({ onCreate }) => {
   );
 };
 
-export default DiaryEditor;
+export default React.memo(DiaryEditor);

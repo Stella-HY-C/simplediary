@@ -1,5 +1,5 @@
 import "./App.css";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import DiaryEditor from "./DiaryEditor";
 import DiaryList from "./DiaryList";
 // import OptimizeTest from "./OptimizeTest";
@@ -35,7 +35,7 @@ function App() {
   }, []);
 
   // 새로작성하는 데이터를 받는 함수
-  const onCreate = ({ author, content, emotion }) => {
+  const onCreate = useCallback(({ author, content, emotion }) => {
     const created_date = new Date().getTime();
 
     // 받아온 값을 저장해주기
@@ -48,26 +48,39 @@ function App() {
     };
 
     dataId.current += 1;
+
+    console.log(data);
     // 새로운 데이터를 앞으로 넣어줘야하기때문에 앞에 newData를 앞으로
     setData([newData, ...data]);
-  };
+    // setData((data) => [newData, ...data]);
+  }, []);
 
   // 데이터를 삭제하는 함수
-  const onRemove = (id) => {
-    const newList = data.filter((item) => item.id !== id);
+  const onRemove = useCallback((id) => {
+    // const newList = data.filter((item) => item.id !== id);
 
-    setData(newList);
-  };
+    // useCallback사용 때문에 변경함.
+    // setData부분에 최신 state가 전달이 되어야 하기때문에 기존 state의 data가 아닌 전달받은 최신의 data를 사용해야한다.
+    setData((data) => data.filter((item) => item.id !== id));
+  }, []);
 
-  const onEdit = (id, newContent) => {
+  const onEdit = useCallback((id, newContent) => {
     // 수정 대상의 id를 찾아서 맞을 경우 content변경, 아닐경우 기존 아이템으로 추가
-    setData(
-      // 새로운 배열을 setData해주기
+    // setData(
+    //   // 새로운 배열을 setData해주기
+    //   data.map((item) =>
+    //     item.id === id ? { ...item, content: newContent } : item
+    //   )
+    // );
+
+    setData((data) =>
+      // 새로운 배열을 setData해주기 -> 마찬가지로 useCallback을 사용해서 최신의 state data값을 받기 위해 수정
+      // 이렇게 하면 삭제나 수정하기 누르면 state가 변경이 되서 모든 다이어리 아이템이 리랜더링 됐는데 현재는 그렇게 되지 않음
       data.map((item) =>
         item.id === id ? { ...item, content: newContent } : item
       )
     );
-  };
+  }, []);
 
   /*
   데이터를 넘길때 스프레드 연산자로 보내는 것도 가능. 
