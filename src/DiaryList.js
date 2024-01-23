@@ -1,10 +1,20 @@
+import { useContext } from "react";
+import { DiaryStateContext } from "./App";
 import DiaryItem from "./DiaryItem";
 
 // 여기서 (diaryList) 로 받으면 {diaryList : [{},{}]} 이런식으로 받아지고
 // ({diaryList})로 받으면 [{},{}] 이런식으로 받아진다
 // 결국 여기서 알수있는것은 Props는 지정한 key : value값으로 전달이 되기때문에 여러개를 key형태가 아닌 value 그 자체로 받고 싶으면
 // ({ 변수명, 변수명, 변수명 }) 이런식으로 받아야한다.
-const DiaryList = ({ diaryList, onRemove, onEdit }) => {
+// const DiaryList = ({ diaryList, onRemove, onEdit }) => {
+
+// context로 diaryList받기
+const DiaryList = ({ onRemove, onEdit }) => {
+  // react-hooks
+  // 우리가 꺼내고 싶은 context를 useContext에 전달하면 됨
+  // DiaryStateContext -> app.js에서 export해줬기 때문에 사용이 가능함
+  const diaryList = useContext(DiaryStateContext);
+
   return (
     <div className="DiaryList">
       <h2>일기 리스트</h2>
